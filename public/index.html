@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML to Export</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 20px;
+    }
+
+    h1 { color: #333; }
+
+    textarea {
+      width: 100%;
+      max-width: 800px;
+      height: 400px;
+      padding: 16px;
+      font-family: monospace;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    button {
+      padding: 12px 28px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      transition: opacity 0.2s;
+    }
+
+    button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    #btn-pdf { background: #e74c3c; }
+    #btn-png { background: #2980b9; }
+
+    #status {
+      font-size: 14px;
+      color: #555;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>HTML → PDF / PNG</h1>
+
+  <textarea id="html-input" placeholder="Pegá tu código HTML acá..."></textarea>
+
+  <div class="buttons">
+    <button id="btn-pdf">⬇ Descargar PDF</button>
+    <button id="btn-png">⬇ Descargar PNG</button>
+  </div>
+
+  <p id="status"></p>
+
+  <script>
+    const textarea = document.getElementById("html-input");
+    const btnPdf = document.getElementById("btn-pdf");
+    const btnPng = document.getElementById("btn-png");
+    const status = document.getElementById("status");
+
+    async function exportFile(endpoint, filename) {
+      const html = textarea.value.trim();
+
+      if (!html) {
+        status.textContent = "⚠ Pegá algo de HTML primero.";
+        return;
+      }
+
+      btnPdf.disabled = true;
+      btnPng.disabled = true;
+      status.textContent = "Generando archivo...";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ html })
+        });
+
+        if (!response.ok) throw new Error("Error en el servidor");
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+
+        URL.revokeObjectURL(url);
+        status.textContent = `✅ ${filename} descargado!`;
+
+      } catch (err) {
+        status.textContent = "❌ Ocurrió un error. Revisá la consola.";
+        console.error(err);
+      } finally {
+        btnPdf.disabled = false;
+        btnPng.disabled = false;
+      }
+    }
+
+    btnPdf.addEventListener("click", () => exportFile("/export-pdf", "export.pdf"));
+    btnPng.addEventListener("click", () => exportFile("/export-png", "export.png"));
+  </script>
+
+</body>
+</html>
