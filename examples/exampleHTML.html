@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #f9f5f0;
+      margin: 0;
+      padding: 40px;
+      color: #333;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border-top: 6px solid #e74c3c;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #e74c3c;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #999;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    p {
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .highlight {
+      background: #fff3cd;
+      border-left: 4px solid #f0ad4e;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #bbb;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Reporte de Prueba</h1>
+    <p class="subtitle">Generado con Puppeteer · Abril 2026</p>
+
+    <p>Este es un documento de prueba para verificar que la exportación a <strong>PDF</strong> y <strong>PNG</strong> funciona correctamente con Puppeteer.</p>
+
+    <p>El servidor recibe el HTML desde el frontend, lo renderiza en un browser headless y devuelve el archivo generado listo para descargar.</p>
+
+    <div class="highlight">
+      ⚡ Si estás viendo esto en un PDF o PNG, significa que todo funcionó perfectamente!
+    </div>
+
+    <p>Podés personalizar este HTML con cualquier contenido: tablas, imágenes, gráficos, tipografías, colores, etc. Puppeteer renderiza el HTML tal cual lo vería un browser real.</p>
+
+    <div class="footer">pruebaPuppeteer · localhost:3000</div>
+  </div>
+</body>
+</html>
